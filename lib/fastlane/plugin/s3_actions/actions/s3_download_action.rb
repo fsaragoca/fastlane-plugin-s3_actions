@@ -14,7 +14,7 @@ module Fastlane
         output_path = params[:output_path]
 
         output_directory = File.dirname(output_path)
-        unless File.exists?(output_directory)
+        unless File.exist?(output_directory)
           Actions.sh("mkdir #{output_directory}", log: $verbose)
         end
 
