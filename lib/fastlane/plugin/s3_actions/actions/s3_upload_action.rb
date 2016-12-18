@@ -15,7 +15,7 @@ module Fastlane
           UI.user_error! "Bucket '#{bucket_name}' not found, please verify bucket and credentials 🚫"
         end
 
-        file_name = params[:name] || params[:content_path].split('/').last
+        file_name = params[:name] || File.basename(params[:content_path])
 
         object = bucket.objects.build(file_name)
         object.content = open(params[:content_path])
