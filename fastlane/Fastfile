@@ -1,0 +1,41 @@
+lane :test do |options|
+  access_key_id = options[:access_key_id] || UI.input('Please enter AWS Access Key ID: ')
+  secret_access_key = options[:secret_access_key] || UI.input('Please enter AWS Secret Access Key: ')
+  bucket = options[:bucket] || UI.input('Please enter AWS bucket: ')
+  file_to_upload = options[:upload_path] || UI.input('Please enter path for file to upload: ')
+  file_to_download = options[:download_file_name] || UI.input('Please enter name for file to download: ')
+
+  if file_to_upload.empty?
+    UI.important 'Skipping upload test'
+  else
+    s3_upload(
+      access_key_id: access_key_id,
+      secret_access_key: secret_access_key,
+      bucket: bucket,
+      content_path: file_to_upload
+    )
+  end
+
+  if file_to_download.empty?
+    UI.important 'Skipping download test'
+  else
+    exists = s3_check_file(
+      access_key_id: access_key_id,
+      secret_access_key: secret_access_key,
+      bucket: bucket,
+      file_name: file_to_download
+    )
+
+    if exists
+      s3_download(
+        access_key_id: access_key_id,
+        secret_access_key: secret_access_key,
+        bucket: bucket,
+        file_name: file_to_download,
+        output_path: file_to_download
+      )
+    else
+      UI.error "File '#{bucket}/#{file_to_download}' not found 🚫"
+    end
+  end
+end
