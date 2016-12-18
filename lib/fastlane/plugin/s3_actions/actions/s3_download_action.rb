@@ -13,6 +13,11 @@ module Fastlane
         file_name = params[:file_name]
         output_path = params[:output_path]
 
+        output_directory = File.dirname(output_path)
+        unless File.exists?(output_directory)
+          Actions.sh("mkdir #{output_directory}", log: $verbose)
+        end
+
         bucket = service.buckets.find(bucket_name)
         if bucket.nil?
           UI.user_error! "Bucket '#{bucket_name}' not found, please verify bucket and credentials 🚫"
