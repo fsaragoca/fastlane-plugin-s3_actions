@@ -57,7 +57,7 @@ module Fastlane
           FastlaneCore::ConfigItem.new(key: :file_name,
                                   env_name: "S3_ACTIONS_CHECK_FILE_NAME",
                                description: "File name",
-                                  optional: true,
+                                  optional: false,
                                       type: String)
         ]
       end
